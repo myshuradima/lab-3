@@ -2,7 +2,7 @@ import cx_Oracle
 
 import csv
 
-connection = cx_Oracle.connect("LAB_3/Optiquest22@localhost:1521/xe", encoding="UTF-8", nencoding="UTF-8")
+connection = cx_Oracle.connect("LAB_3/LAB_3@localhost:1521/xe", encoding="UTF-8", nencoding="UTF-8")
 
 def get_str(a):
     mystring = str(a)
