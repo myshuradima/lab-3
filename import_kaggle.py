@@ -25,17 +25,16 @@ with open('country_csv.csv', newline='', encoding='utf-8') as csvfile:
 
 query = """insert into production_country(country_id, country_name) values (:country_id, :country_name)"""
 
-cursor_order = connection.cursor()
+cursor = connection.cursor()
 
 for el in data:
     print(el[0]+" "+el[1])
-    cursor_order.execute(query, country_id=el[0], country_name=el[1])
+    cursor.execute(query, country_id=el[0], country_name=el[1])
     country_list1.append(el[0])
-cursor_order.execute(query, country_id='0', country_name='Not mentioned')
-cursor_order.execute(query, country_id='CS', country_name='Chekhskiy')
+cursor.execute(query, country_id='0', country_name='Not mentioned')
 
 country_list1.append('0')
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 data = []
@@ -47,13 +46,13 @@ with open('language-codes_csv.csv', newline='', encoding='utf-8') as csvfile:
 
 query = """insert into spoken_language(language_id, language_name) values (:language_id, :language_name)"""
 
-cursor_order = connection.cursor()
+cursor = connection.cursor()
 
-cursor_order.prepare(query)
+cursor.prepare(query)
 
-cursor_order.executemany(None, data)
+cursor.executemany(None, data)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 film_country = []
@@ -87,10 +86,7 @@ with open('tmdb_5000_movies.csv', newline='', encoding='utf-8') as csvfile:
          while(i<n):
              genres_dict[int(new_list3[i])] = new_list4[i][1:-1]
              film_genres.append((get_str(row[3]), int(new_list3[i])))
- #            print(str(new_list4[i][1:-1]) + ":" + new_list3[i])
- #            print(get_str(row[3]) + ":" + str(new_list3[i]))
              i = i + 1
-#         print(new_list4)
 
          if row[9] == "[]":
              row[9] = """[{""Name"":  ""Not mentioned"" , ""id"": 0}]"""
@@ -107,11 +103,8 @@ with open('tmdb_5000_movies.csv', newline='', encoding='utf-8') as csvfile:
          i = 0
          while (i < n):
              companies[int(new_list4[i])] = new_list3[i][1:-1]
-#             print(str(new_list4[i]) + ":" + new_list3[i][1:-1])
-#             print(get_str(row[3]) + ":" + str(new_list4[i]))
              film_company.append((get_str(row[3]), int(new_list4[i])))
              i = i + 1
-#         print(new_list3)
 
 
          if row[10] == "[]":
@@ -129,8 +122,6 @@ with open('tmdb_5000_movies.csv', newline='', encoding='utf-8') as csvfile:
              i = 0
          while (i < n):
              film_country.append((get_str(row[3]), get_str(new_list3[i][1: -1])))
-#             print("countries")
-             #print(film_country[-1])
              i = i+1
 
 
@@ -145,92 +136,89 @@ with open('tmdb_5000_movies.csv', newline='', encoding='utf-8') as csvfile:
              new_list2 = el.split(", ")
              new_list3.append(new_list2[0].split(": ")[1])
              n = len(new_list3)
-             #print(new_list3[0] + "HELLO")
              i = 0
          while (i < n):
-             # print(new_list3[i]+":"+new_list4[i])
              film_language.append((new_list3[i][1: -1], get_str(row[3])))
-#             print(film_language[-1])
              i = i + 1
 
 
 query = "insert into film(film_id, budget, homepage, original_title, release_date, runtime) values(:film_id, :budget, :homepage, :original_title, TO_DATE(:release_date, 'yyyy-mm-dd'), :runtime)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
-cursor_order.executemany(None, films)
+cursor.executemany(None, films)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 query = "insert into genres(genre_id, genre) values(:genre_id, :genre_name)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
 genres_list = [ el for el in genres_dict.items()]
-cursor_order.executemany(None, genres_list)
+cursor.executemany(None, genres_list)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 query = "insert into production_company(company_id, company_name) values(:company_id, :company_name)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
 companies_list = [ el for el in companies.items()]
-cursor_order.executemany(None, companies_list)
+cursor.executemany(None, companies_list)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 query = "insert into film_company(film_film_id, production_company_id) values(:film_id, :company_id)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
-cursor_order.executemany(None, film_company)
+cursor.executemany(None, film_company)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 query = "insert into film_genres(film_film_id, genres_genre_id) values(:film_id, :genre_id)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
-cursor_order.executemany(None, film_genres)
+cursor.executemany(None, film_genres)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 
 query = "insert into film_country(film_film_id, production_country_id) values(:film_id, :country_id)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 print(len(film_country))
-cursor_order.executemany(None, film_country)
+cursor.executemany(None, film_country)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 
 
 query = "insert into film_languages(spoken_language_language_id, film_film_id) values(:language_id, :film_id)"
 
-cursor_order = connection.cursor()
-cursor_order.prepare(query)
+cursor = connection.cursor()
+cursor.prepare(query)
 
-cursor_order.executemany(None, film_language)
+cursor.executemany(None, film_language)
 
-cursor_order.close()
+cursor.close()
 connection.commit()
 """
 delete from film_country;
