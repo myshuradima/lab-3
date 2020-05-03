@@ -1,7 +1,7 @@
 import cx_Oracle
 import plotly.offline as py
 import plotly.graph_objs as go
-connection = cx_Oracle.connect("LAB_3/Optiquest22@localhost:1521/xe")
+connection = cx_Oracle.connect("LAB_3/LAB_3@localhost:1521/xe")
 
 cursor = connection.cursor()
 query = """
