@@ -220,13 +220,3 @@ cursor.executemany(None, film_language)
 
 cursor.close()
 connection.commit()
-"""
-delete from film_country;
-delete from film_company;
-delete from film_genres;
-delete from film;
-delete from genres;
-delete from production_company;
-delete from spoken_language;
-delete from production_country;
-"""
