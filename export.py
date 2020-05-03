@@ -1,7 +1,7 @@
 import csv
 import cx_Oracle
 
-connection = cx_Oracle.connect("LAB_3/Optiquest22@localhost:1521/xe", encoding="UTF-8", nencoding="UTF-8")
+connection = cx_Oracle.connect("LAB_3/LAB_3@localhost:1521/xe", encoding="UTF-8", nencoding="UTF-8")
 
 cursor_film = connection.cursor()
 
